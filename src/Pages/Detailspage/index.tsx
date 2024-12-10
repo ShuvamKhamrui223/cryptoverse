@@ -19,11 +19,11 @@ const Detailspage = () => {
       const data = await response.json();
       return data;
     },
-    staleTime: 60000,
+    staleTime: 10000,
     placeholderData: keepPreviousData,
   });
   if (error) {
-    <h3 className="text-red-100">there are some while fetching recipes</h3>;
+    <h3 className="text-red-100">there is something wrong</h3>;
   }
   if (isLoading) {
     <h3 className="">loading recipes</h3>;

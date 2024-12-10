@@ -68,10 +68,26 @@ const RecipeSiteRoutes = () => {
           ),
         },
         {
+          path: "coins/:coinid",
+          element: (
+            <Suspense>
+              <Detailspage />
+            </Suspense>
+          ),
+        },
+        {
           path: "about",
           element: (
             <Suspense fallback={<SectionLoader />}>
               <AboutPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "coins",
+          element: (
+            <Suspense fallback={<SectionLoader />}>
+              <Coinspage />
             </Suspense>
           ),
         },
