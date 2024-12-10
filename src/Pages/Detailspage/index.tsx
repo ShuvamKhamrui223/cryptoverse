@@ -50,7 +50,7 @@ const Detailspage = () => {
             <li className="flex justify-between">
               <p className="capitalize">price in USD</p>
               <p className="font-bold">
-                {formatCurrency(singleCoinData?.market_data?.current_price.usd)}
+                {formatCurrency(singleCoinData?.market_data?.current_price?.usd)}
               </p>
             </li>
             <li className="flex justify-between">
@@ -66,7 +66,7 @@ const Detailspage = () => {
             <li className="flex justify-between">
               <p className="capitalize">all time high</p>
               <p className="font-bold">
-                {formatCurrency(singleCoinData?.market_data.ath.usd)}
+                {formatCurrency(singleCoinData?.market_data.ath?.usd)}
               </p>
             </li>
           </ul>
@@ -91,7 +91,7 @@ const Detailspage = () => {
             <li className="flex justify-between">
               <p className="capitalize">total volume</p>
               <p className="font-bold">
-                {formatCurrency(singleCoinData?.market_data?.total_volume.usd)}
+                {formatCurrency(singleCoinData?.market_data?.total_volume?.usd)}
               </p>
             </li>
             <li className="flex justify-between">
@@ -115,7 +115,7 @@ const Detailspage = () => {
           <ul className=" flex flex-col gap-2  mt-2 mb-8">
             <li className="flex justify-between gap-4">
               <p className="capitalize">homepage</p>
-              <p className="font-bold">{singleCoinData?.links.homepage}</p>
+              <p className="font-bold">{singleCoinData?.links?.homepage}</p>
             </li>
             <li className="flex justify-between">
               <p className="capitalize">circulating supply</p>
@@ -128,7 +128,7 @@ const Detailspage = () => {
             <li className="flex justify-between">
               <p className="capitalize">total volume</p>
               <p className="font-bold">
-                {formatCurrency(singleCoinData?.market_data?.total_volume.usd)}
+                {formatCurrency(singleCoinData?.market_data?.total_volume?.usd)}
               </p>
             </li>
             <li className="flex justify-between">
@@ -154,7 +154,7 @@ const Detailspage = () => {
           what is {singleCoinData?.id}
         </h2>
         <p className="text-gray-300 tracking-wider my-2 ">
-          {singleCoinData?.description.en}
+          {singleCoinData?.description?.en}
         </p>
       </section>
 
