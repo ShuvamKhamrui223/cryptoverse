@@ -22,7 +22,7 @@ const CoinColumns: ColumnDef<CoinsDataType>[] = [
     cell: ({ row }) => (
       <div className="flex items-center gap-4">
         <img
-          src={row.original.image}
+          src={row?.original?.image}
           alt=""
           className="size-10"
           loading="lazy"
