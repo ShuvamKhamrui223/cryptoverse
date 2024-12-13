@@ -1,17 +1,20 @@
-import { useQuery, keepPreviousData } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import Container from "../../Container";
-import { Link, NavLink, Outlet, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { singleCoinType } from "../../types";
 import { formatCurrency } from "../../utils/NumberFormatter";
+import { useCoinDataContext } from "../../contexts/CoinDataContext";
+import { Chart } from "chart.js";
+import LineChart from "../../components/ui/charts/LineChart";
 const Detailspage = () => {
   const params = useParams();
-
+  const { selectedCurrency } = useCoinDataContext();
   const {
     isLoading,
     error,
     data: singleCoinData,
   } = useQuery({
-    queryKey: ["coin"],
+    queryKey: ["coin", params.coinid],
     queryFn: async (): Promise<singleCoinType | undefined> => {
       const response = await fetch(
         `https://api.coingecko.com/api/v3/coins/${params?.coinid}`
@@ -20,8 +23,25 @@ const Detailspage = () => {
       return data;
     },
     staleTime: 10000,
-    placeholderData: keepPreviousData,
+    // placeholderData: keepPreviousData,
   });
+
+  const {
+    isLoading: isChartLoading,
+    error: chartError,
+    data: chartData,
+  } = useQuery({
+    queryKey: ["coin", params.coinid],
+    queryFn: async (): Promise<singleCoinType | undefined> => {
+      const response = await fetch(
+        `https://api.coingecko.com/api/v3/coins/${params?.id}/market_chart?vs_currency=${selectedCurrency}&days=10`
+      );
+      const data = await response.json();
+      return data;
+    },
+    staleTime: 10000,
+  });
+
   if (error) {
     <h3 className="text-red-100">there is something wrong</h3>;
   }
@@ -29,17 +49,18 @@ const Detailspage = () => {
     <h3 className="">loading recipes</h3>;
   }
 
-  // if (singleCoinData) console.log(singleCoinData);
+  // if (singleCoinData) console.log(chartData);
   return (
-    <Container>
+    <Container className="gap-4">
       <div className="w-full flex flex-col md:flex-row items-center ">
         <img
-          src={singleCoinData?.image.large}
+          src={singleCoinData?.image?.thumb}
           alt={singleCoinData?.id}
-          className=""
+          className="size-40"
         />
         <h1 className="text-5xl capitalize">{singleCoinData?.id}</h1>
       </div>
+
       <section className="w-full flex flex-wrap items-start gap-8">
         <div className="">
           <h2 className="text-3xl capitalize">
@@ -50,7 +71,9 @@ const Detailspage = () => {
             <li className="flex justify-between">
               <p className="capitalize">price in USD</p>
               <p className="font-bold">
-                {formatCurrency(singleCoinData?.market_data?.current_price?.usd)}
+                {formatCurrency(
+                  singleCoinData?.market_data?.current_price?.usd
+                )}
               </p>
             </li>
             <li className="flex justify-between">
@@ -60,13 +83,13 @@ const Detailspage = () => {
             <li className="flex justify-between">
               <p className="capitalize">market cap</p>
               <p className="font-bold">
-                {formatCurrency(singleCoinData?.market_data.market_cap?.usd)}
+                {formatCurrency(singleCoinData?.market_data?.market_cap?.usd)}
               </p>
             </li>
             <li className="flex justify-between">
               <p className="capitalize">all time high</p>
               <p className="font-bold">
-                {formatCurrency(singleCoinData?.market_data.ath?.usd)}
+                {formatCurrency(singleCoinData?.market_data?.ath?.usd)}
               </p>
             </li>
           </ul>
@@ -120,9 +143,7 @@ const Detailspage = () => {
             <li className="flex justify-between">
               <p className="capitalize">circulating supply</p>
               <p className="font-bold">
-                {
-                  singleCoinData?.links.subreddit_url
-                }
+                {singleCoinData?.links?.subreddit_url}
               </p>
             </li>
             <li className="flex justify-between">
@@ -153,12 +174,12 @@ const Detailspage = () => {
         <h2 className="text-4xl first-letter:uppercase text-gray-200">
           what is {singleCoinData?.id}
         </h2>
-        <p className="text-gray-300 tracking-wider my-2 ">
-          {singleCoinData?.description?.en}
-        </p>
+        <p
+          className="text-gray-300 tracking-wider my-2 "
+          dangerouslySetInnerHTML={{ __html: singleCoinData?.description?.en }}
+        />
       </section>
-
-      <section className=""></section>
+      {/* <LineChart /> */}
     </Container>
   );
 };

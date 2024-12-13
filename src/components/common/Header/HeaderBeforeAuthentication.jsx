@@ -59,6 +59,8 @@ const NavbarBeforeAuthentication = ({ navbarMenu }) => {
             />
           </svg>
         </button>
+
+
       </div>
     </div>
   );

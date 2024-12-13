@@ -88,7 +88,7 @@ const CoinsTable: React.FC<CoinsTableProps> = ({ coins }) => {
             <tr
               key={row.id}
               className="my-6 cursor-pointer hover:bg-gray-800"
-              onClick={() => navigate(row.original.id)}
+              onClick={() => navigate(row.original?.id)}
             >
               {row.getVisibleCells().map((cell) => (
                 <td key={cell.id} className="px-4 py-3">

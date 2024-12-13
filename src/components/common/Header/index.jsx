@@ -19,7 +19,21 @@ const Header = ({ sidebarToggler }) => {
             ) : (
               <NavbarAfterAuthentication navbarMenu={navLinks} />
             )}
-
+            <select
+              name="currency"
+              className="mx-2 px-4 py-2 bg-gray-800 text-gray-300 hover:to-gray-200 uppercase cursor-pointer font-semibold "
+              id=""
+            >
+              <option
+                value=""
+                className="font-medium bg-blue-950 outline-none border-none rounded-xl"
+              >
+                usd
+              </option>
+              <option value="" className="font-medium">
+                inr
+              </option>
+            </select>
             {/* sidebar menu toggler for mobile devices */}
             <button
               className="block rounded bg-gray-100 p-2.5 text-gray-600 transition hover:text-gray-600/75 md:hidden dark:bg-gray-800 dark:text-white dark:hover:text-white/75"

@@ -3,11 +3,14 @@ import App from "./App.jsx";
 import "./index.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "./contexts/AuthContext.tsx";
+import { CoinContextProvider } from "./contexts/CoinDataContext.tsx";
 const queryClientInstance = new QueryClient();
 createRoot(document.getElementById("root")).render(
-  <AuthProvider>
-    <QueryClientProvider client={queryClientInstance}>
-      <App />
-    </QueryClientProvider>
-  </AuthProvider>
+  <QueryClientProvider client={queryClientInstance}>
+    <CoinContextProvider>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </CoinContextProvider>
+  </QueryClientProvider>
 );

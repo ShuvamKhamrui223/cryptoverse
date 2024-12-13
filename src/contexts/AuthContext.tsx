@@ -1,12 +1,14 @@
 import { createContext, PropsWithChildren, useContext } from "react";
-
-const AuthContext = createContext(null);
+type AuthContextType = {
+  user: boolean | null;
+};
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   const user: boolean = true;
-  return <AuthContext.Provider value={{user}}>
-    {children}
-  </AuthContext.Provider>
+  return (
+    <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
+  );
 };
 
 // hook to provide authcontext to any component

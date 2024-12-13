@@ -4,7 +4,7 @@ type ContainerProps={
   className?:string,
 }
 const Container = ({ children, className }:ContainerProps) => {
-  return <div className={`px-[3%] md:px-[5%] py-[5%] ${className}`}>{children}</div>;
+  return <div className={`px-[3%] md:px-[5%] py-[3%] ${className}`}>{children}</div>;
 };
 
 export default Container;

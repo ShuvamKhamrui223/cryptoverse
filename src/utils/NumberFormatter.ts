@@ -1,7 +1,9 @@
-export const formatCurrency = (currency:number) =>
-  new Intl.NumberFormat("en-US", {
+export const formatCurrency = (currency: number | undefined): string | undefined => {
+  if (typeof currency === undefined) return
+
+  const formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
-    compactDisplay: "short",
-    notation: "compact",
-  }).format(currency);
+  })
+  return formatter.format(currency);
+}
