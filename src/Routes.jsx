@@ -10,10 +10,10 @@ import ProtectedRoutes from "./Pages/ProtectedRoutes";
 import Homepage from "./Pages/Homepage";
 import Errorpage from "./Pages/Errorpage";
 import SectionLoader from "./components/common/PreLoaders/SectionLoader";
-
 /* lazy pages */
 
 const Coinspage = lazy(() => import("./Pages/Coinspage"));
+const Newspage = lazy(() => import("./Pages/Newspage"));
 const Detailspage = lazy(() => import("./Pages/Detailspage"));
 const AboutPage = lazy(() => import("./Pages/AboutPage"));
 
@@ -91,6 +91,15 @@ const RecipeSiteRoutes = () => {
             </Suspense>
           ),
         },
+        // {
+        //   path: "news",
+        //   element: (
+        //     <Suspense fallback={<SectionLoader />}>
+
+        //       <Newspage />
+        //     </Suspense>
+        //   ),
+        // },
         {
           path: "saved",
           element: (

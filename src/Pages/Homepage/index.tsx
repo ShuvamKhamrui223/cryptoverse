@@ -5,9 +5,9 @@ const CoinsTable = lazy(() => import("./components/Coinstable/index.js"));
 const QUERY_STALE_TIME = 360000;
 
 
-type coinsResponse = {
-  coins: CoinsDataType[], total: number, page: number
-}
+// type coinsResponse = {
+//   coins: CoinsDataType[], total: number, page: number
+// }
 const Homepage = () => {
   const {
     isLoading,

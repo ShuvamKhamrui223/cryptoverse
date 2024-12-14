@@ -23,9 +23,7 @@ type CoinContextType = {
 const CoinContext = createContext<CoinContextType | undefined>(undefined);
 
 // context provider
-export const CoinContextProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}: PropsWithChildren) => {
+export const CoinContextProvider = ({ children }: PropsWithChildren) => {
   const [selectedCurrency, setSelectedCurrency] = useState<string>("usd");
   const {
     isLoading,

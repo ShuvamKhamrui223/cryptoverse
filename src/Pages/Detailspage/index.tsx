@@ -1,14 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import Container from "../../Container";
 import { useParams } from "react-router-dom";
-import { singleCoinType } from "../../types";
+import { chartType, singleCoinType } from "../../types";
 import { formatCurrency } from "../../utils/NumberFormatter";
 import { useCoinDataContext } from "../../contexts/CoinDataContext";
-import { Chart } from "chart.js";
 import LineChart from "../../components/ui/charts/LineChart";
+import { useState } from "react";
 const Detailspage = () => {
   const params = useParams();
   const { selectedCurrency } = useCoinDataContext();
+  const [selectedTimeRange, setSelectedTimeRange] = useState(10);
   const {
     isLoading,
     error,
@@ -23,7 +24,6 @@ const Detailspage = () => {
       return data;
     },
     staleTime: 10000,
-    // placeholderData: keepPreviousData,
   });
 
   const {
@@ -31,10 +31,10 @@ const Detailspage = () => {
     error: chartError,
     data: chartData,
   } = useQuery({
-    queryKey: ["coin", params.coinid],
-    queryFn: async (): Promise<singleCoinType | undefined> => {
+    queryKey: [params.coinid, selectedTimeRange],
+    queryFn: async (): Promise<chartType | undefined> => {
       const response = await fetch(
-        `https://api.coingecko.com/api/v3/coins/${params?.id}/market_chart?vs_currency=${selectedCurrency}&days=10`
+        `https://api.coingecko.com/api/v3/coins/${params?.coinid}/market_chart?vs_currency=${selectedCurrency}&days=${selectedTimeRange}&interval=daily`
       );
       const data = await response.json();
       return data;
@@ -48,13 +48,13 @@ const Detailspage = () => {
   if (isLoading) {
     <h3 className="">loading recipes</h3>;
   }
-
-  // if (singleCoinData) console.log(chartData);
+  if (chartError) console.log(chartError.message);
+  // if (chartData) console.log(chartData);
   return (
     <Container className="gap-4">
       <div className="w-full flex flex-col md:flex-row items-center ">
         <img
-          src={singleCoinData?.image?.thumb}
+          src={singleCoinData?.image?.large}
           alt={singleCoinData?.id}
           className="size-40"
         />
@@ -176,10 +176,30 @@ const Detailspage = () => {
         </h2>
         <p
           className="text-gray-300 tracking-wider my-2 "
-          dangerouslySetInnerHTML={{ __html: singleCoinData?.description?.en }}
+          dangerouslySetInnerHTML={{
+            __html:
+              typeof singleCoinData?.description?.en === "string"
+                ? singleCoinData.description?.en
+                : singleCoinData?.description?.en?.outerHTML,
+          }}
         />
       </section>
-      {/* <LineChart /> */}
+      <div className="">
+        <label>data of last 10days</label>
+        <select
+          name="timerange"
+          id=""
+          onChange={(e) => setSelectedTimeRange(e.currentTarget.value)}
+        >
+          <option value="10" selected>
+            10 days
+          </option>
+          <option value="30">30 days</option>
+          <option value="180">6 months</option>
+          <option value="365">1 year</option>
+        </select>
+      </div>
+      {typeof chartData !== "undefined" && <LineChart chartData={chartData} />}
     </Container>
   );
 };
