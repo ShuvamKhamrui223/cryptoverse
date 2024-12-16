@@ -1,5 +1,4 @@
-import React from "react";
-import { CoinsDataType } from "../..";
+import React, { useState } from "react";
 import { formatCurrency } from "../../../../utils/NumberFormatter";
 import {
   ColumnDef,
@@ -7,9 +6,11 @@ import {
   getCoreRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  PaginationState,
   useReactTable,
 } from "@tanstack/react-table";
 import { useNavigate } from "react-router-dom";
+import { CoinsDataType } from "../../../../types";
 
 type CoinsTableProps = {
   coins?: CoinsDataType[];
@@ -55,18 +56,28 @@ const CoinColumns: ColumnDef<CoinsDataType>[] = [
   },
 ];
 const CoinsTable: React.FC<CoinsTableProps> = ({ coins }) => {
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+
   const table = useReactTable({
     data: coins || [],
     columns: CoinColumns,
     getCoreRowModel: getCoreRowModel(),
-
-    // manualPagination: true,
+    getPaginationRowModel: getPaginationRowModel(),
+    onPaginationChange: setPagination,
+    state: {
+      pagination,
+    },
   });
 
   const navigate = useNavigate();
   return (
     <>
-      <table className="w-[80%] overflow-x-auto sm:overflow-x-hidden text-center bg-slate-950 rounded-2xl">
+      {/* no of result indicator */}
+
+      <table className="w-full overflow-x-auto sm:overflow-x-hidden text-center bg-slate-950 rounded-2xl">
         <thead className="font-semibold capitalize">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
@@ -115,8 +126,179 @@ const CoinsTable: React.FC<CoinsTableProps> = ({ coins }) => {
           ))}
         </tfoot>
       </table>
+
+      {/* pagination */}
+      {/* <div className="flex items-center justify-center gap-2 py-8">
+        <button className="border rounded p-1">{"<<"}</button>
+        <button className="border rounded p-1">{"<"}</button>
+        <button className="border rounded p-1">{">"}</button>
+        <button
+          className="border rounded p-1"
+          onClick={() => table.lastPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          {">>"}
+        </button>
+        <span className="flex items-center gap-1">
+          <div>Page</div>
+          <strong>
+            {table.getState().pagination.pageIndex + 1} of{" "}
+            {table.getPageCount().toLocaleString()}
+          </strong>
+        </span>
+        <span className="flex items-center gap-1">
+          | Go to page:
+          <input
+            type="number"
+            min="1"
+            max={table.getPageCount()}
+            defaultValue={table.getState().pagination.pageIndex + 1}
+            onChange={(e) => {
+              const page = e.target.value ? Number(e.target.value) - 1 : 0;
+              table.setPageIndex(page);
+            }}
+            className="border p-1 rounded w-16"
+          />
+        </span>
+        <select
+          value={table.getState().pagination.pageSize}
+          onChange={(e) => {
+            table.setPageSize(Number(e.target.value));
+          }}
+        >
+          {[10, 20, 30, 40, 50].map((pageSize) => (
+            <option key={pageSize} value={pageSize}>
+              Show {pageSize}
+            </option>
+          ))}
+        </select>
+      </div> */}
+      {location.pathname !== "/" && <TablePagination table={table} />}
     </>
   );
 };
 
 export default CoinsTable;
+
+export const TablePagination = ({ table }) => {
+  return (
+    <div className="">
+      <div className="flex flex-col items-center">
+        <span className="text-sm text-gray-700 dark:text-gray-400">
+          Showing{" "}
+          <span className="font-semibold text-gray-900 dark:text-white">
+            {table.getRowModel().rows.length.toLocaleString()}
+          </span>{" "}
+          to{" "}
+          <span className="font-semibold text-gray-900 dark:text-white">
+            {table.getRowCount().toLocaleString()}
+          </span>{" "}
+          {/* of{" "}
+          <span className="font-semibold text-gray-900 dark:text-white">
+            100
+          </span>{" "} */}
+        </span>
+        <div className="inline-flex mt-2 xs:mt-0">
+          <button
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+            className="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 rounded-s hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+          >
+            <svg
+              className="w-3.5 h-3.5 me-2 rtl:rotate-180"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 14 10"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 5H1m0 0 4 4M1 5l4-4"
+              />
+            </svg>
+            Prev
+          </button>
+          <button
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+            className="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 border-0 border-s border-gray-700 rounded-e hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+          >
+            Next
+            <svg
+              className="w-3.5 h-3.5 ms-2 rtl:rotate-180"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 14 10"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M1 5h12m0 0L9 1m4 4L9 9"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+      {/* <div className="flex flex-col items-center">
+        <span className="text-sm text-gray-700 dark:text-gray-400">
+          Showing{" "}
+          <span className="font-semibold text-gray-900 dark:text-white">1</span>{" "}
+          to{" "}
+          <span className="font-semibold text-gray-900 dark:text-white">
+            10
+          </span>{" "}
+          of{" "}
+          <span className="font-semibold text-gray-900 dark:text-white">
+            100
+          </span>{" "}
+          Entries
+        </span>
+        <div className="inline-flex mt-2 xs:mt-0">
+          {" "}
+          <button className="flex items-center justify-center px-4 h-10 text-base font-medium text-white bg-gray-800 rounded-s hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+            <svg
+              className="w-3.5 h-3.5 me-2 rtl:rotate-180"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 14 10"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 5H1m0 0 4 4M1 5l4-4"
+              />
+            </svg>
+            Prev
+          </button>
+          <button className="flex items-center justify-center px-4 h-10 text-base font-medium text-white bg-gray-800 border-0 border-s border-gray-700 rounded-e hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+            Next
+            <svg
+              className="w-3.5 h-3.5 ms-2 rtl:rotate-180"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 14 10"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M1 5h12m0 0L9 1m4 4L9 9"
+              />
+            </svg>
+          </button>
+        </div>
+      </div> */}
+    </div>
+  );
+};

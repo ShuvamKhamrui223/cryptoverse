@@ -4,7 +4,11 @@ import { useAuthContext } from "../../../contexts/AuthContext";
 import NavbarBeforeAuthentication from "./HeaderBeforeAuthentication";
 import NavbarAfterAuthentication from "./HeaderAfterAuthentication";
 import { navLinks } from "../../../content/navbarMenu";
-const Header = ({ sidebarToggler }) => {
+import React from "react";
+type HeaderType = {
+  sidebarToggler: () => void;
+};
+const Header: React.FC<HeaderType> = ({ sidebarToggler }) => {
   const user = useAuthContext();
   return (
     <>

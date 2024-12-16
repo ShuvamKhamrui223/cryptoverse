@@ -1,7 +1,7 @@
 import { useState } from "react";
-const getNetStatus = () => navigator.onLine;
+const getNetStatus = (): boolean => navigator.onLine;
 const useNetStatus = () => {
-  const [netStatus] = useState(getNetStatus);
+  const [netStatus] = useState<boolean>(getNetStatus);
 
   return netStatus;
 };

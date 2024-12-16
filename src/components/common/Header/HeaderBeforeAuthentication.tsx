@@ -1,6 +1,11 @@
 import { Link, NavLink, useLocation } from "react-router-dom";
-
-const NavbarBeforeAuthentication = ({ navbarMenu }) => {
+import { navLinksType } from "../../../content/navbarMenu";
+type NavbarBeforeAuthenticationType = {
+  navbarMenu: navLinksType[];
+};
+const NavbarBeforeAuthentication = ({
+  navbarMenu,
+}: NavbarBeforeAuthenticationType) => {
   const currentLocation = useLocation();
 
   return (
@@ -59,8 +64,6 @@ const NavbarBeforeAuthentication = ({ navbarMenu }) => {
             />
           </svg>
         </button>
-
-
       </div>
     </div>
   );

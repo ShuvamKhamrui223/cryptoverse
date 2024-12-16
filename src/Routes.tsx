@@ -21,11 +21,11 @@ const AboutPage = lazy(() => import("./Pages/AboutPage"));
 const SavedPage = lazy(() => import("./Pages/ProtectedRoutes/SavedPage"));
 
 // authentication related pages
-const Signinpage = lazy(() =>
-  import("./Layouts/AuthLayout/components/forms/Signin")
+const Signinpage = lazy(
+  () => import("./Layouts/AuthLayout/components/forms/Signin")
 );
-const Registerpage = lazy(() =>
-  import("./Layouts/AuthLayout/components/forms/Register")
+const Registerpage = lazy(
+  () => import("./Layouts/AuthLayout/components/forms/Register")
 );
 const RecipeSiteRoutes = () => {
   const AppRouter = createBrowserRouter([
@@ -62,7 +62,7 @@ const RecipeSiteRoutes = () => {
         {
           path: ":coinid",
           element: (
-            <Suspense>
+            <Suspense fallback={<SectionLoader />}>
               <Detailspage />
             </Suspense>
           ),
@@ -91,15 +91,6 @@ const RecipeSiteRoutes = () => {
             </Suspense>
           ),
         },
-        // {
-        //   path: "news",
-        //   element: (
-        //     <Suspense fallback={<SectionLoader />}>
-
-        //       <Newspage />
-        //     </Suspense>
-        //   ),
-        // },
         {
           path: "saved",
           element: (

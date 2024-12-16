@@ -7,11 +7,10 @@ import useNetStatus from "../../hooks/useNetStatus";
 
 const Sidebar = lazy(() => import("../../components/common/Sidebar"));
 const RootLayout = () => {
-  const [sidebarVisibility, setSidebarVisibility] = useState(false);
+  const [sidebarVisibility, setSidebarVisibility] = useState<boolean>(false);
 
   const netStatus = useNetStatus();
   const navigation = useNavigation();
-  const currentLocation = useLocation();
 
   if (navigation.state === "loading") return <SectionLoader />;
   return (

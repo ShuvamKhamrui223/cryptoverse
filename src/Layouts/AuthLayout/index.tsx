@@ -1,7 +1,6 @@
 import { Outlet } from "react-router-dom";
 
 const AuthLayout = () => {
-  
   return (
     <>
       <section className="bg-gray-900">

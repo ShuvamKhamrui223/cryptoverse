@@ -1,4 +1,7 @@
-export const navLinks = [
+export type navLinksType = {
+  itemId: number, item: string, pageUrl: string
+}
+export const navLinks: navLinksType[] = [
   {
     itemId: 1,
     item: "home",
@@ -10,11 +13,6 @@ export const navLinks = [
     pageUrl: "/coins",
   },
 
-  {
-    itemId: 2,
-    item: "news",
-    pageUrl: "/news",
-  },
   {
     itemId: 3,
     item: "about",
